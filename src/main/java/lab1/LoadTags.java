@@ -1,4 +1,4 @@
-package org.example;
+package lab1;
 
 import com.github.sh0nk.matplotlib4j.NumpyUtils;
 import com.github.sh0nk.matplotlib4j.Plot;
@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import static org.apache.spark.sql.functions.*;
 
-public class LoadRatings {
+public class LoadTags {
 
     public static void main(String[] args) {
         SparkSession spark = SparkSession.builder()
@@ -22,7 +22,7 @@ public class LoadRatings {
                 .format("csv")
                 .option("header", "true")
                 .option("inferSchema", true)
-                .load("src/main/resources/ratings.csv");
+                .load("src/main/resources/tags.csv");
 
         var df_transformed = df.withColumn("datetime", functions.from_unixtime(df.col("timestamp")))
                 .withColumn("year", functions.year(col("datetime")))
@@ -31,7 +31,7 @@ public class LoadRatings {
 
         var df_stats_ym = df_transformed.groupBy(df_transformed.col("year"), df_transformed.col("month")).count().orderBy(df_transformed.col("year"), df_transformed.col("month"));
         df_stats_ym.show(1000);
-        plot_stats_ym(df_stats_ym, "Ratings per month", "Ratings");
+        plot_stats_ym(df_stats_ym, "Tags per month", "Ratings");
     }
 
     static void plot_stats_ym(Dataset<Row> df, String title, String label) {
