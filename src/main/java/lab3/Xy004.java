@@ -36,7 +36,7 @@ public class Xy004 {
                 .format("csv")
                 .option("header", "true")
                 .option("inferSchema", true)
-                .load("src/main/resources/lab3/xy-002.csv");
+                .load("src/main/resources/lab3/xy-004.csv");
 
         VectorAssembler vectorAssembler = new VectorAssembler()
                 .setInputCols(new String[] {"X"})
@@ -70,7 +70,7 @@ public class Xy004 {
         var x = df_trans.select("X").as(Encoders.DOUBLE()).collectAsList().stream().toList();
         var y = df_trans.select("Y").as(Encoders.DOUBLE()).collectAsList().stream().toList();
 
-        plot(x, y, lrModel, "Linear Regression", Xy004::realFunction);
+        plot(x, y, lrModel, "Linear Regression xy004", Xy004::realFunction);
     }
 
     static void plotObjectiveHistory(List<Double> lossHistory){

@@ -70,7 +70,7 @@ public class Xy002 {
         var x = df_trans.select("X").as(Encoders.DOUBLE()).collectAsList().stream().toList();
         var y = df_trans.select("Y").as(Encoders.DOUBLE()).collectAsList().stream().toList();
 
-        plot(x, y, lrModel, "Linear Regression", Xy002::realFunction);
+        plot(x, y, lrModel, "Linear Regression xy002", Xy002::realFunction);
     }
 
     static void plotObjectiveHistory(List<Double> lossHistory){
