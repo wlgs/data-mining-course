@@ -27,14 +27,20 @@ public class JoinUsersTags {
         df_users.createOrReplaceTempView("users");
         df_tags.createOrReplaceTempView("tags");
 
-        String query = "SELECT email, tags FROM users JOIN tags ON users.userId = tags.userId GROUP BY users.email, users.userId";
+        String query = "SELECT users.email, tags.tag FROM users JOIN tags ON users.userId = tags.userId";
 
         Dataset<Row> df_ut = spark.sql(query);
 
         df_ut.show();
 
-        var tagsList = df_ut.select("tag").distinct().collectAsList();
-        System.out.println("Unique tags:" + tagsList.size());
+        df_ut.createOrReplaceTempView("ut");
+        String query2 = "SELECT email, concat_ws(' ', collect_list(tag)) as tags FROM ut GROUP BY email";
+        Dataset<Row> df_ut2 = spark.sql(query2);
+        df_ut2.show();
 
+        // print all tags in console
+        df_ut2.collectAsList().forEach(row -> {
+            System.out.println(row.get(1));
+        });
     }
 }
